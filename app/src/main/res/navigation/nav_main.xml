@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/menu_home">
+
+    <fragment
+        android:id="@+id/menu_home"
+        android:name="com.example.sporttrucker20.Fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_menu_home_to_menu_settings"
+            app:destination="@id/menu_settings" />
+        <action
+            android:id="@+id/action_menu_home_to_menu_map"
+            app:destination="@id/menu_map" />
+        <action
+            android:id="@+id/action_menu_home_to_menu_about"
+            app:destination="@id/menu_about" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/menu_map"
+        android:name="com.example.sporttrucker20.Fragments.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_menu_map_to_menu_settings"
+            app:destination="@id/menu_settings" />
+        <action
+            android:id="@+id/action_menu_map_to_menu_home"
+            app:destination="@id/menu_home" />
+        <action
+            android:id="@+id/action_menu_map_to_menu_about"
+            app:destination="@id/menu_about" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/menu_about"
+        android:name="com.example.sporttrucker20.Fragments.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" >
+        <action
+            android:id="@+id/action_menu_about_to_menu_settings"
+            app:destination="@id/menu_settings" />
+        <action
+            android:id="@+id/action_menu_about_to_menu_home"
+            app:destination="@id/menu_home" />
+        <action
+            android:id="@+id/action_menu_about_to_menu_map"
+            app:destination="@id/menu_map" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/menu_settings"
+        android:name="com.example.sporttrucker20.Fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_menu_settings_to_menu_home"
+            app:destination="@id/menu_home" />
+        <action
+            android:id="@+id/action_menu_settings_to_menu_about"
+            app:destination="@id/menu_about" />
+        <action
+            android:id="@+id/action_menu_settings_to_menu_map"
+            app:destination="@id/menu_map" />
+    </fragment>
+
+</navigation>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sport Trucker</string>
+    <string name="satelite">Satélite</string>
+    <string name="vetorial">Vectorial</string>
+    <string name="orientacao.name">Orientación del Mapa</string>
+    <string name="u.velo">Unidad de Velocidad</string>
+    <string name="exercicio">Tipo de Ejercicio</string>
+    <string name="exerPedalada">Pedaleo</string>
+    <string name="exerCorrida">Raza</string>
+    <string name="exerCaminhada">Caminata</string>
+    <string name="t.mapa">Tipo de Mapa</string>
+    <string name="salvar">Salvar</string>
+    <string name="Conf.name">Configuración</string>
+    <string name="course">Curso Arriba</string>
+    <string name="north">Norte Arriba</string>
+    <string name="u.km" translatable="false">km/h (kiilómetro por hora</string>
+    <string name="u.ms">m/s (meters per second)</string>
+    <string name="action_settings">Configuración</string>
+    <string name="nav_header_desc">Encabezado de navegación</string>
+    <string name="menu_home">Hogar</string>
+    <string name="perfilUsuario">Perfil de Usuario</string>
+    <string name="peso">Ingrese su peso</string>
+    <string name="altura">Introduce tu altura</string>
+    <string name="nome">Ingrese su nombre</string>
+    <string name="voltar">Regressa</string>
+    <string name="btnPerfilSalvar">Salvar Perfil</string>
+    <string name="menu_settings">Ajustes</string>
+    <string name="menu_about">Sobre</string>
+    <string name="menu_map">Mapa</string>
+</resources>

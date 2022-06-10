@@ -1,0 +1,38 @@
+<resources>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="nav_header_title" translatable="false">Android Studio</string>
+    <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
+    <string name="perfilUsuario">Perfil do Usuário</string>
+    <string name="peso">Digite Seu Peso</string>
+    <string name="altura">Digite Sua Altura</string>
+    <string name="nome">Digite Seu Nome</string>
+
+
+    <string name="app_name">Sport Trucker</string>
+    <string name="menu_home">Inicio</string>
+    <string name="menu_map">Mapa</string>
+    <string name="menu_about">Sobre</string>
+    <string name="menu_settings">Configuração</string>
+    <string name="exerCaminhada">Caminhada</string>
+    <string name="exerCorrida">Corrida</string>
+    <string name="exerPedalada">Pedalada</string>
+    <string name="exercicio">Tipo de Exercício</string>
+    <string name="u.velo">Unidade de Velocidade</string>
+    <string name="u.km">km/h (quilômetro por hora)</string>
+    <string name="u.ms">m/s (metros por segundo)</string>
+    <string name="orientacao.name">Orientação do Mapa</string>
+    <string name="north">North Up</string>
+    <string name="course">Course Up</string>
+    <string name="t.mapa">Tipo de Mapa</string>
+    <string name="vetorial">Vetorial</string>
+    <string name="satelite">Satélite</string>
+    <string name="salvar">Salvar</string>
+    <string name="action_settings">Configurações</string>
+    <string name="nav_header_desc">Cabeçalho de navegação</string>
+    <string name="voltar">Voltar</string>
+    <string name="Conf.name">Configuração</string>
+    <string name="btnPerfilSalvar">Salvar Perfil</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Aqui!</string>
+</resources>
