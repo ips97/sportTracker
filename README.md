@@ -10,7 +10,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 - Java
 
-## 🔖 IDE
+## 🛠 IDE
 
 Projeto desenvolvido para Android através do Android Studio de maneira nativa.
 
