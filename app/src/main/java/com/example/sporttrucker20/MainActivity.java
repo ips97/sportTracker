@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         initNavigation();
+
+
     }
 
     private void initNavigation(){
@@ -31,4 +33,12 @@ public class MainActivity extends AppCompatActivity {
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
     }
+
+    /*
+    * Falta corrigir o acesso do botçao no menu de formulário
+    * precisei parar o vídeo sobre a tela de login,
+    * assistir agora o vídeo sobre projeto em três etapas
+    * Para identificar como acessar componentes em fragments
+    * E como usar da maneira correta o binding
+    */
 }

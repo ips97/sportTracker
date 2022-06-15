@@ -33,6 +33,12 @@
     <string name="voltar">Voltar</string>
     <string name="Conf.name">Configuração</string>
     <string name="btnPerfilSalvar">Salvar Perfil</string>
+
+    <string name="btnEntrar">Entrar</string>
+    <string name="btnCadastrar">Cadastrar</string>
+    <string name="textCadastro">Crie uma conta clicando aqui!</string>
+    <string name="textRecuperarSenha">Esqueceu sua senha?</string>
+    <string name="title_cadastro">Cadastre-se</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Aqui!</string>
 </resources>

@@ -1,7 +1,12 @@
 package com.example.sporttrucker20.Fragments;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
@@ -14,6 +19,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.sporttrucker20.R;
+import com.example.sporttrucker20.databinding.FragmentSettingsBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,18 +28,18 @@ import com.example.sporttrucker20.R;
  */
 public class SettingsFragment extends Fragment {
 
-
+    private FragmentSettingsBinding binding;
 
     public SettingsFragment() {
         // Required empty public constructor
     }
 
     private SettingsFragment SettingsFragment;
-    Button salvar, voltar;
+   /* Button salvar, voltar;
     RadioButton caminhada, corrida, pedalada, km, ms, north, course, vetorial, satelite;
     RadioGroup groupExercicio, groupVelocidade, groupOrientacao, groupMapa;
     String exercicio, velocidade, orientacao, mapa;
-
+*/
     public static SettingsFragment newInstance(String param1, String param2) {
         SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
@@ -46,12 +52,35 @@ public class SettingsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
 
+        binding.btnSalvar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences prefs = getActivity().getSharedPreferences("chaveGeral", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                Exercicio(v);
+            }
+
+            private void Exercicio(View v) {
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        binding = FragmentSettingsBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

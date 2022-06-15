@@ -28,4 +28,9 @@
     <string name="menu_settings">Ajustes</string>
     <string name="menu_about">Sobre</string>
     <string name="menu_map">Mapa</string>
+    <string name="btnEntrar">Iniciar Sesión</string>
+    <string name="textCadastro">Crea una cuenta haciendo clic aquí</string>
+    <string name="btnCadastrar">Registrar</string>
+    <string name="textRecuperarSenha">Olvidaste tu contraseña?</string>
+    <string name="title_cadastro">Registro</string>
 </resources>
