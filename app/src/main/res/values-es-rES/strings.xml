@@ -33,4 +33,5 @@
     <string name="btnCadastrar">Registrar</string>
     <string name="textRecuperarSenha">Olvidaste tu contraseña?</string>
     <string name="title_cadastro">Registro</string>
+    <string name="title_sobre">Miembros del equipo:</string>
 </resources>
