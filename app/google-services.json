@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "851485512546",
+    "project_id": "sport-tracker-1eb43",
+    "storage_bucket": "sport-tracker-1eb43.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:851485512546:android:2a68c5ef1763349505923b",
+        "android_client_info": {
+          "package_name": "com.example.sporttrucker20"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "851485512546-9n4kjj6tnq4jfo2cftf7rh6sl6k8q7r7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQSZ_NuVB2NqrBkq4VrhQbNPUHvYmDFN4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "851485512546-9n4kjj6tnq4jfo2cftf7rh6sl6k8q7r7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
