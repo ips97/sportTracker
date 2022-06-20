@@ -1,11 +1,14 @@
 package com.example.sporttrucker20;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
+
+import com.example.sporttrucker20.Fragments.MapsFragment;
 import com.example.sporttrucker20.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         initNavigation();
-
 
     }
 
