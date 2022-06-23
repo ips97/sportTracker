@@ -35,4 +35,6 @@
     <string name="textRecuperarSenha">Forgot your password?</string>
     <string name="title_sobre">Team Members:</string>
     <string name="title_recuperar">Retrieve Account</string>
+    <string name="inputSpeed">Speed</string>
+    <string name="inputDistance">Distance</string>
 </resources>

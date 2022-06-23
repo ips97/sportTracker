@@ -41,6 +41,8 @@
     <string name="title_cadastro">Cadastre-se</string>
     <string name="title_sobre">Integrantes da Equipe:</string>
     <string name="title_recuperar">Recuperar Conta</string>
+    <string name="inputSpeed">Velocidade</string>
+    <string name="inputDistance">Distancia</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Aqui!</string>
 </resources>

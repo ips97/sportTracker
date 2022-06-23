@@ -1,22 +1,20 @@
 package com.example.sporttrucker20.Fragments;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Chronometer;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 import com.example.sporttrucker20.R;
 import com.example.sporttrucker20.databinding.FragmentMapsBinding;
@@ -32,6 +30,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class MapsFragment extends Fragment {
 
@@ -52,6 +56,11 @@ public class MapsFragment extends Fragment {
 
     private GoogleMap mMap;
 
+    private ImageView mPlay, mPause, mClear;
+    private AppCompatButton btnSalvar;
+    private Chronometer cronometro;
+
+    String speedUnit, mapOrientation, mapType, exerciseType;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,13 +75,9 @@ public class MapsFragment extends Fragment {
         SupportMapFragment supportMapFragment = (SupportMapFragment)
                 this.getChildFragmentManager().findFragmentById(R.id.google_map);
 
-
-
         // inicia processo de localização
         iniciaColetaLocalizacao();
         initialTime = System.currentTimeMillis();
-
-
 
         //Sincronizar mapa
         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -103,10 +108,176 @@ public class MapsFragment extends Fragment {
             }
         });
 
+        readInformationsSaved();
+        readInformationsSavedProfile();
+        buscaLocalizacaoAtual();
+
+        btnSalvar = binding.btnSalvar;
+        mPlay = binding.btnPlay;
+        mPause = binding.btnPause;
+        mClear = binding.btnClear;
+
         //Retornar view
         return root;
     }
 
+    private void buscaLocalizacaoAtual() {
+        if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
+            mLocationRequest = LocationRequest.create();
+
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            mLocationRequest.setInterval(5*1000);
+            mLocationRequest.setFastestInterval(1*1000);
+
+            mLocationCallback = new LocationCallback(){
+                @Override
+                public void onLocationResult(LocationResult locationResult){
+                    super.onLocationResult(locationResult);
+                    Location location = locationResult.getLastLocation();
+
+                    atualizaPosicaoNoMapa(location);
+
+                }
+            };
+
+            mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null );
+
+        } else {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_UPDATES);
+        }
+    }
+
+    private Double readInformationsSavedProfile() {
+        Double totalCal = 0.0;
+
+        try{
+
+            FileInputStream fileInputStream = getActivity().openFileInput("Profile File.txt");
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+
+            BufferedReader bufferedReader = new BufferedReader((inputStreamReader));
+            StringBuffer stringBuffer = new StringBuffer();
+
+            String line;
+            while((line = bufferedReader.readLine()) != null){
+                stringBuffer.append(line + "\n");
+                totalCal = calculaGastoCalorias(line);
+
+            }
+
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        } catch(IOException e){
+            e.printStackTrace();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return totalCal;
+    }
+
+    private Double calculaGastoCalorias(String infos) {
+        String[]  informations = infos.split(";");
+
+        String peso = informations[2];
+
+        double vel = 0;
+
+        if("m/s".equalsIgnoreCase(speedUnit)){
+            double ms = Double.parseDouble(binding.inputSpeed.getText().toString());
+            vel = ms * 3.6;
+        } else {
+            vel = Double.parseDouble(binding.inputSpeed.getText().toString());
+        }
+        double cal = 0;
+
+        if("walking".equalsIgnoreCase(exerciseType)){
+            cal = 0.0140;
+        } else if ("running".equalsIgnoreCase(exerciseType)){
+            cal = 0.0175;
+        } else {
+            cal = 0.0199;
+        }
+
+        cal = (Double.parseDouble(peso) * vel) * cal;
+        cal = round(cal, 2);
+
+        String[] minSec = cronometro.getText().toString().split(":");
+        String min = minSec[0];
+        String sec = minSec[1];
+        double totalCal = 0;
+
+        if(!"00".equals(min)){
+            totalCal = cal * Double.parseDouble(min);
+        } else if(!"00".equals(sec)){
+            totalCal += cal * (Double.parseDouble(sec) / 60);
+        }
+
+        return round(totalCal, 2);
+    }
+
+    private Double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
+
+    private void readInformationsSaved() {
+        try{
+
+            FileInputStream fileInputStream = getActivity().openFileInput("Monitoring File.txt");
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+
+            BufferedReader bufferedReader = new BufferedReader((inputStreamReader));
+            StringBuffer stringBuffer = new StringBuffer();
+
+            String line;
+            while((line = bufferedReader.readLine()) != null){
+                stringBuffer.append(line + "\n");
+                setFieldsInformationsSaved(line);
+
+            }
+
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        } catch(IOException e){
+            e.printStackTrace();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void setFieldsInformationsSaved(String infos) {
+        String[]  informations = infos.split(";");
+
+        exerciseType = informations[0];
+        speedUnit = informations[1];
+        mapOrientation = informations[2];
+        mapType = informations[3];
+
+        binding.inputSpeed.setText(speedUnit);
+        //binding.styleExec.setText(exerciseType);
+        String unt = "km/h".equalsIgnoreCase(speedUnit) ? "(Km)" : "(m)";
+        binding.inputDistance.setText(unt);
+
+        //Verificação do exercício
+        /*
+        if("walking".equalsIgnoreCase(exerciseType)){
+            binding.imageView4.setBackgroundResource(R.color.red);
+            binding.imageView4.setImageResource(R.drawable.ic_walking);
+
+        } else if ("running".equalsIgnoreCase(exerciseType)){
+            binding.imageView4.setBackgroundResource(R.color.green);
+            binding.imageView4.setImageResource(R.drawable.ic_running);
+        } else {
+            binding.imageView4.setBackgroundResource(R.color.blue);
+            binding.imageView4.setImageResource(R.drawable.ic_baseline_directions_bike_24);
+        }*/
+    }
 
 
     private void iniciaColetaLocalizacao() {

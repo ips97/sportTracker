@@ -35,4 +35,6 @@
     <string name="title_cadastro">Registro</string>
     <string name="title_sobre">Miembros del equipo:</string>
     <string name="title_recuperar">Recuperar Cuenta</string>
+    <string name="inputSpeed">Velocidad</string>
+    <string name="inputDistance">Distancia</string>
 </resources>
