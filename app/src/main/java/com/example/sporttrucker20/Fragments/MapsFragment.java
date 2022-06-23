@@ -1,9 +1,7 @@
 package com.example.sporttrucker20.Fragments;
 
-
-import static com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY;
-
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -11,7 +9,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +27,6 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -53,38 +52,33 @@ public class MapsFragment extends Fragment {
 
     private GoogleMap mMap;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //binding = FragmentMapsBinding.inflate(inflater, container, false);
-        //return binding.getRoot();
-
-
+        binding = FragmentMapsBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
 
         //Iniciar view
-        View view = inflater.inflate(R.layout.fragment_maps, container, false);
+        //View view = inflater.inflate(R.layout.fragment_maps, container, false);
 
         //Iniciar fragmento de mapa
         SupportMapFragment supportMapFragment = (SupportMapFragment)
-                getChildFragmentManager().findFragmentById(R.id.google_map);
+                this.getChildFragmentManager().findFragmentById(R.id.google_map);
 
 
-        GoogleMapOptions options = new GoogleMapOptions();
-        options.mapType(GoogleMap.MAP_TYPE_SATELLITE)
-                .compassEnabled(true)
-                        .rotateGesturesEnabled(true)
-                                .tiltGesturesEnabled(true);
+
+        // inicia processo de localização
+        iniciaColetaLocalizacao();
+        initialTime = System.currentTimeMillis();
+
+
 
         //Sincronizar mapa
         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(@NonNull GoogleMap googleMap) {
+                mMap = googleMap;
                 //Mapa for carregado
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
@@ -97,25 +91,23 @@ public class MapsFragment extends Fragment {
                         //Indicar texto da marcação
                         markerOptions.title(latLng.latitude +" : "+ latLng.longitude);
                         //Remover todas as marcações
-                        googleMap.clear();
+                        mMap.clear();
                         //Animando o zoom
-                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                                 latLng, 10
                         ));
                         //Adicionar marcarção no mapa
-                        googleMap.addMarker(markerOptions);
+                        mMap.addMarker(markerOptions);
                     }
                 });
             }
         });
 
-        // inicia processo de localização
-        iniciaColetaLocalizacao();
-        initialTime = System.currentTimeMillis();
-
         //Retornar view
-        return view;
+        return root;
     }
+
+
 
     private void iniciaColetaLocalizacao() {
 
@@ -149,18 +141,11 @@ public class MapsFragment extends Fragment {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_LOCATION_UPDATES);
         }
-
     }
 
-    private ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(new RequestPermission(), isGranted -> {
-        if (isGranted) {
-            // Permission is granted. Continue the action or workflow in your
-            // app.
-        } else {
-
     @Override
-    public void onRequestPermissions(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissions(requestCode,permissions,grantResults);
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
         if (requestCode == REQUEST_LOCATION_UPDATES) {
             if(grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // O usuário acabou de dar a permissão
@@ -169,11 +154,42 @@ public class MapsFragment extends Fragment {
             else {
                 // O usuário não deu a permissão solicitada
                 Toast.makeText(getContext(),"Sem permissão para mostrar atualizações da sua localização", Toast.LENGTH_SHORT).show();
-                getActivity().finish();
+
             }
         }
     }
 
-    private void atualizaPosicaoNoMapa(Location location) {
+
+    public void atualizaPosicaoNoMapa(Location location) {
+
+        currentTime = System.currentTimeMillis();
+        elapsedTime = currentTime - initialTime;
+
+        if(firstFix){
+            firstFix = false;
+            currentPosition = lastPosition = location;
+            distanciaAcumulada = 0;
+        }else{
+            lastPosition = currentPosition;
+            currentPosition = location;
+            distanciaAcumulada+=currentPosition.distanceTo(lastPosition);
+        }
+
+        System.out.println("Distância percorrida (m): "+distanciaAcumulada);
+        System.out.println("Tempo Transcorrido (s): "+elapsedTime/1000);
+        LatLng userPosition = new LatLng(location.getLatitude(), location.getLongitude());
+
+        if(mMap != null){
+            if (userMarker == null) {
+                userMarker = mMap.addMarker(new MarkerOptions().position(userPosition));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition,15f));
+            }else{
+                userMarker.setPosition(userPosition);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(userPosition));
+            }
+        }
     }
+
+
+
 }
