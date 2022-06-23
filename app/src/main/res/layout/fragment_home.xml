@@ -93,6 +93,7 @@
         app:layout_constraintStart_toEndOf="@id/iconeEmail"/>
 
     <Button
+        android:id="@+id/bt_deslogar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Deslogar"

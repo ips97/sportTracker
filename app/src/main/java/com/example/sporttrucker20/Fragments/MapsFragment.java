@@ -15,6 +15,7 @@ import com.example.sporttrucker20.R;
 import com.example.sporttrucker20.databinding.FragmentMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -28,6 +29,8 @@ public class MapsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //MapsFragment mapsFragment = SupportMapFragment
 /*
         Fragment fragment = new MapsFragment();
         //Fragment fragment = new MapsFragment();
@@ -46,12 +49,21 @@ public class MapsFragment extends Fragment {
         //binding = FragmentMapsBinding.inflate(inflater, container, false);
         //return binding.getRoot();
 
+
+
         //Iniciar view
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
 
         //Iniciar fragmento de mapa
         SupportMapFragment supportMapFragment = (SupportMapFragment)
                 getChildFragmentManager().findFragmentById(R.id.google_map);
+
+
+        GoogleMapOptions options = new GoogleMapOptions();
+        options.mapType(GoogleMap.MAP_TYPE_SATELLITE)
+                .compassEnabled(true)
+                        .rotateGesturesEnabled(true)
+                                .tiltGesturesEnabled(true);
 
         //Sincronizar mapa
         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
