@@ -237,7 +237,7 @@ public class MapsFragment extends Fragment {
 
     // funcao para mostrar o tempo e a distancia de movimentação
     // quando se dá o play
-   void setDistanciaTempoEVelocidade(){
+  private void setDistanciaTempoEVelocidade(){
 
         if(prefs.getString("velocidade","").equals("ms") && distanciaAcumulada > 0 && started == true){
 
@@ -264,7 +264,7 @@ public class MapsFragment extends Fragment {
     }
 
     // funcao p/ mostrar o monitoramento de tempo/velocidade/distancia
-   void startBtn(){
+   private void startBtn(){
 
         mPlay.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -282,7 +282,7 @@ public class MapsFragment extends Fragment {
     }
 
     // funcao p/ limpar o monitoramento de tempo/velocidade/distancia
-   void limparBtn(){
+    private void limparBtn(){
 
         mClear.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -301,7 +301,7 @@ public class MapsFragment extends Fragment {
     }
 
     // funcao p/ dar pause no monitoramento de tempo/velocidade/distancia
-   void pauseBtn(){
+    private void pauseBtn(){
 
         mPause.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -318,7 +318,7 @@ public class MapsFragment extends Fragment {
     }
 
     // método para verificar tipo de mapa
-   void verficaMapaTipo(){
+    private void verficaMapaTipo(){
         mUiSettings = mMap.getUiSettings();
 
         if(prefs.getString("mapa","").equals("vetorial")){
@@ -333,7 +333,7 @@ public class MapsFragment extends Fragment {
     }
 
     // metodo p/ verificar orientacao do mapa
-   void verficaMapaOrientacao(){
+    private void verficaMapaOrientacao(){
         mUiSettings = mMap.getUiSettings();
         mUiSettings.setCompassEnabled(false);
 
