@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frame_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/green"
-    android:id="@+id/frame_layout"
+    android:visibility="visible"
     tools:context=".Fragments.MapsFragment">
 
     <!--ImageView
@@ -16,12 +17,12 @@
 
     <fragment
         android:id="@+id/google_map"
-        android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginRight="2dp"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="409dp"
+        android:layout_height="404dp"
         android:layout_marginLeft="2dp"
-        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="2dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -33,8 +34,8 @@
             style="@style/ContainerComponents"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="-70dp"
-            tools:layout_editor_absoluteY="50dp" />
+            tools:layout_editor_absoluteX="24dp"
+            tools:layout_editor_absoluteY="16dp" />
 
         <EditText
             android:id="@+id/inputSpeed"
@@ -49,7 +50,7 @@
             app:layout_constraintStart_toStartOf="@id/containerComponents"
             app:layout_constraintTop_toTopOf="@id/containerComponents" />
 
-        <TextView
+        <Chronometer
             android:id="@+id/chronometer"
             style="@style/Edit_Text"
             android:layout_width="100dp"
@@ -75,49 +76,55 @@
             android:hint="@string/inputDistance"
             android:inputType="number"
             android:padding="10dp"
+            android:visibility="visible"
             app:layout_constraintStart_toEndOf="@id/chronometer"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/btn_play"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="104dp"
-            android:layout_marginTop="32dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="92dp"
+            android:layout_marginTop="18dp"
             android:src="@drawable/ic_play_circle"
             app:layout_constraintStart_toStartOf="@id/containerComponents"
             app:layout_constraintTop_toBottomOf="@id/inputSpeed" />
 
         <ImageView
             android:id="@+id/btn_clear"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="32dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="18dp"
             android:src="@drawable/ic_clear"
+            app:layout_constraintBottom_toTopOf="@+id/btnSalvar"
             app:layout_constraintStart_toEndOf="@id/btn_pause"
-            app:layout_constraintTop_toBottomOf="@id/inputDistance" />
+            app:layout_constraintTop_toBottomOf="@id/inputDistance"
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
             android:id="@+id/btn_pause"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="32dp"
+            android:layout_width="40dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="18dp"
             android:src="@drawable/ic_pause_circle"
             app:layout_constraintStart_toEndOf="@id/btn_play"
             app:layout_constraintTop_toBottomOf="@id/chronometer" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:layout_width="200dp"
             android:id="@+id/btnSalvar"
             style="@style/Button"
+            android:layout_width="190dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="18dp"
+            android:padding="5dp"
             android:text="@string/salvar"
-            android:padding="10dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_pause"/>
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_pause" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

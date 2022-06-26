@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/green"
@@ -165,24 +165,14 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSalvar"
-            android:layout_width="wrap_content"
+            style="@style/Button"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            style="@style/Button"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:layout_marginBottom="20dp"
-            android:text="@string/salvar"/>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnVoltar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            style="@style/Button"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="@string/voltar" />
+            android:text="@string/salvar" />
 
     </LinearLayout>
 

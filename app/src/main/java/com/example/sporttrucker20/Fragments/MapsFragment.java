@@ -1,14 +1,19 @@
 package com.example.sporttrucker20.Fragments;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +32,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -36,6 +43,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 public class MapsFragment extends Fragment {
 
@@ -50,17 +59,22 @@ public class MapsFragment extends Fragment {
     // Atributos p/ manipulação do mapa
     Marker userMarker;
     Location currentPosition, lastPosition;
-    boolean firstFix = true;
-    double distanciaAcumulada;
-    long initialTime, currentTime, elapsedTime;
-
+    boolean firstFix = true, started = false, cron = false;
+    double distanciaAcumulada, distanciaAcumuladaKm;
+    long initialTime, currentTime, elapsedTime, pauseOffset;
+    DecimalFormat df = null;
+    private SharedPreferences prefs;
     private GoogleMap mMap;
+    private UiSettings mUiSettings;
+
 
     private ImageView mPlay, mPause, mClear;
     private AppCompatButton btnSalvar;
     private Chronometer cronometro;
+    private TextView inputDistance, inputSpeed;
 
-    String speedUnit, mapOrientation, mapType, exerciseType;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,11 +93,14 @@ public class MapsFragment extends Fragment {
         iniciaColetaLocalizacao();
         initialTime = System.currentTimeMillis();
 
+
         //Sincronizar mapa
         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(@NonNull GoogleMap googleMap) {
                 mMap = googleMap;
+                verficaMapaTipo();
+                verficaMapaOrientacao();
                 //Mapa for carregado
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
@@ -107,179 +124,26 @@ public class MapsFragment extends Fragment {
                 });
             }
         });
+        prefs = getActivity().getSharedPreferences("chaveGeral", MODE_PRIVATE);
 
-        readInformationsSaved();
-        readInformationsSavedProfile();
-        buscaLocalizacaoAtual();
 
+        cronometro = binding.chronometer;
         btnSalvar = binding.btnSalvar;
         mPlay = binding.btnPlay;
         mPause = binding.btnPause;
         mClear = binding.btnClear;
+        inputSpeed = binding.inputSpeed;
+        inputDistance = binding.inputDistance;
+        limparBtn();
+        startBtn();
+        pauseBtn();
+
 
         //Retornar view
         return root;
     }
 
-    private void buscaLocalizacaoAtual() {
-        if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
-            mLocationRequest = LocationRequest.create();
-
-            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            mLocationRequest.setInterval(5*1000);
-            mLocationRequest.setFastestInterval(1*1000);
-
-            mLocationCallback = new LocationCallback(){
-                @Override
-                public void onLocationResult(LocationResult locationResult){
-                    super.onLocationResult(locationResult);
-                    Location location = locationResult.getLastLocation();
-
-                    atualizaPosicaoNoMapa(location);
-
-                }
-            };
-
-            mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null );
-
-        } else {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_UPDATES);
-        }
-    }
-
-    private Double readInformationsSavedProfile() {
-        Double totalCal = 0.0;
-
-        try{
-
-            FileInputStream fileInputStream = getActivity().openFileInput("Profile File.txt");
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-
-            BufferedReader bufferedReader = new BufferedReader((inputStreamReader));
-            StringBuffer stringBuffer = new StringBuffer();
-
-            String line;
-            while((line = bufferedReader.readLine()) != null){
-                stringBuffer.append(line + "\n");
-                totalCal = calculaGastoCalorias(line);
-
-            }
-
-        }catch(FileNotFoundException e){
-            e.printStackTrace();
-        } catch(IOException e){
-            e.printStackTrace();
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-
-        return totalCal;
-    }
-
-    private Double calculaGastoCalorias(String infos) {
-        String[]  informations = infos.split(";");
-
-        String peso = informations[2];
-
-        double vel = 0;
-
-        if("m/s".equalsIgnoreCase(speedUnit)){
-            double ms = Double.parseDouble(binding.inputSpeed.getText().toString());
-            vel = ms * 3.6;
-        } else {
-            vel = Double.parseDouble(binding.inputSpeed.getText().toString());
-        }
-        double cal = 0;
-
-        if("walking".equalsIgnoreCase(exerciseType)){
-            cal = 0.0140;
-        } else if ("running".equalsIgnoreCase(exerciseType)){
-            cal = 0.0175;
-        } else {
-            cal = 0.0199;
-        }
-
-        cal = (Double.parseDouble(peso) * vel) * cal;
-        cal = round(cal, 2);
-
-        String[] minSec = cronometro.getText().toString().split(":");
-        String min = minSec[0];
-        String sec = minSec[1];
-        double totalCal = 0;
-
-        if(!"00".equals(min)){
-            totalCal = cal * Double.parseDouble(min);
-        } else if(!"00".equals(sec)){
-            totalCal += cal * (Double.parseDouble(sec) / 60);
-        }
-
-        return round(totalCal, 2);
-    }
-
-    private Double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-
-        long factor = (long) Math.pow(10, places);
-        value = value * factor;
-        long tmp = Math.round(value);
-        return (double) tmp / factor;
-    }
-
-    private void readInformationsSaved() {
-        try{
-
-            FileInputStream fileInputStream = getActivity().openFileInput("Monitoring File.txt");
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-
-            BufferedReader bufferedReader = new BufferedReader((inputStreamReader));
-            StringBuffer stringBuffer = new StringBuffer();
-
-            String line;
-            while((line = bufferedReader.readLine()) != null){
-                stringBuffer.append(line + "\n");
-                setFieldsInformationsSaved(line);
-
-            }
-
-        }catch(FileNotFoundException e){
-            e.printStackTrace();
-        } catch(IOException e){
-            e.printStackTrace();
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    private void setFieldsInformationsSaved(String infos) {
-        String[]  informations = infos.split(";");
-
-        exerciseType = informations[0];
-        speedUnit = informations[1];
-        mapOrientation = informations[2];
-        mapType = informations[3];
-
-        binding.inputSpeed.setText(speedUnit);
-        //binding.styleExec.setText(exerciseType);
-        String unt = "km/h".equalsIgnoreCase(speedUnit) ? "(Km)" : "(m)";
-        binding.inputDistance.setText(unt);
-
-        //Verificação do exercício
-        /*
-        if("walking".equalsIgnoreCase(exerciseType)){
-            binding.imageView4.setBackgroundResource(R.color.red);
-            binding.imageView4.setImageResource(R.drawable.ic_walking);
-
-        } else if ("running".equalsIgnoreCase(exerciseType)){
-            binding.imageView4.setBackgroundResource(R.color.green);
-            binding.imageView4.setImageResource(R.drawable.ic_running);
-        } else {
-            binding.imageView4.setBackgroundResource(R.color.blue);
-            binding.imageView4.setImageResource(R.drawable.ic_baseline_directions_bike_24);
-        }*/
-    }
-
-
+    // funcao p/ iniciar a coleta de localização
     private void iniciaColetaLocalizacao() {
 
         // Se a app já possui a permissão, ativa a camada de localização
@@ -314,6 +178,7 @@ public class MapsFragment extends Fragment {
         }
     }
 
+    // funcao p/ solicitar a permissão da verificação de Localização
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode,permissions,grantResults);
@@ -330,7 +195,7 @@ public class MapsFragment extends Fragment {
         }
     }
 
-
+    // funcao para atualizar a localização no mapa
     public void atualizaPosicaoNoMapa(Location location) {
 
         currentTime = System.currentTimeMillis();
@@ -346,14 +211,20 @@ public class MapsFragment extends Fragment {
             distanciaAcumulada+=currentPosition.distanceTo(lastPosition);
         }
 
-        System.out.println("Distância percorrida (m): "+distanciaAcumulada);
-        System.out.println("Tempo Transcorrido (s): "+elapsedTime/1000);
+        setDistanciaTempoEVelocidade();
         LatLng userPosition = new LatLng(location.getLatitude(), location.getLongitude());
+        verficaMapaOrientacao();
+
+
+
+        if(prefs.getString("orientacao","").equals("course")){
+            moverCamera(location);
+        }
 
         if(mMap != null){
             if (userMarker == null) {
                 userMarker = mMap.addMarker(new MarkerOptions().position(userPosition));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition,15f));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition,17f));
             }else{
                 userMarker.setPosition(userPosition);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(userPosition));
@@ -361,6 +232,125 @@ public class MapsFragment extends Fragment {
         }
     }
 
+    // funcao para mostrar o tempo e a distancia de movimentação
+    // quando se dá o play
+    private void setDistanciaTempoEVelocidade(){
 
+        if(prefs.getString("velocidade","").equals("ms") && distanciaAcumulada > 0 && started == true){
+            cron = true;
+            df =  new DecimalFormat("0.00");
+            df.setRoundingMode(RoundingMode.HALF_UP);
+            binding.inputDistance.setText(df.format(distanciaAcumulada) + " km");
+            double time = distanciaAcumulada / ((SystemClock.elapsedRealtime() - cronometro.getBase()) /1000);
+            binding.inputSpeed.setText(df.format(time) + " m/s");
+
+        }if(prefs.getString("velocidade","").equals("km") && distanciaAcumulada> 0 && started == true){
+
+            distanciaAcumuladaKm = distanciaAcumulada / 1000;
+            df =  new DecimalFormat("0.000");
+            DecimalFormat sp =  new DecimalFormat("0.0");
+            df.setRoundingMode(RoundingMode.HALF_UP);
+            double time = distanciaAcumulada / ((SystemClock.elapsedRealtime() - cronometro.getBase()) /1000);
+            time = time * 3.6;
+            binding.inputSpeed.setText(sp.format(time) + " km/h");
+            binding.inputDistance.setText(df.format(distanciaAcumuladaKm) + " km");
+        }
+    }
+
+    // funcao p/ mostrar o monitoramento de tempo/velocidade/distancia
+    private void startBtn(){
+
+        mPlay.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                cronometro.setBase(SystemClock.elapsedRealtime() - pauseOffset);
+                cronometro.start();
+                Toast.makeText(getContext(), "Started", Toast.LENGTH_SHORT).show();
+                mPause.setEnabled(true);
+                btnSalvar.setEnabled(false);
+                mPlay.setEnabled(false);
+                mClear.setEnabled(false);
+                started = true;
+            }
+        });
+    }
+
+    // funcao p/ limpar o monitoramento de tempo/velocidade/distancia
+    private void limparBtn(){
+
+        mClear.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                binding.inputDistance.setText("");
+                distanciaAcumulada = 0;
+                distanciaAcumuladaKm = 0;
+                cronometro.getText();
+                binding.inputSpeed.setText("");
+                cronometro.setBase(SystemClock.elapsedRealtime());
+                pauseOffset = 0;
+                started = false;
+
+            }
+        });
+    }
+
+    // funcao p/ dar pause no monitoramento de tempo/velocidade/distancia
+    private void pauseBtn(){
+
+        mPause.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                cronometro.stop();
+                pauseOffset = SystemClock.elapsedRealtime() - cronometro.getBase();
+                Toast.makeText(getContext(), "Paused", Toast.LENGTH_SHORT).show();
+                btnSalvar.setEnabled(true);
+                mPlay.setEnabled(true);
+                mClear.setEnabled(true);
+                started = false;
+            }
+        });
+    }
+
+    // método para verificar tipo de mapa
+    private void verficaMapaTipo(){
+        mUiSettings = mMap.getUiSettings();
+
+        if(prefs.getString("mapa","").equals("vetorial")){
+            mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        }
+        if(prefs.getString("mapa","").equals("satelite")) {
+            mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        }
+        if(prefs.getString("mapa","").equals("")) {
+            mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        }
+    }
+
+    // metodo p/ verificar orientacao do mapa
+    private void verficaMapaOrientacao(){
+        mUiSettings = mMap.getUiSettings();
+        mUiSettings.setCompassEnabled(false);
+
+
+        if(prefs.getString("orientacao","").equals("north")){
+            mUiSettings.setCompassEnabled(false);
+            mUiSettings.setRotateGesturesEnabled(false);
+        }
+        if(prefs.getString("orientacao","").equals("course")){
+            mUiSettings.setCompassEnabled(false);
+            mUiSettings.setRotateGesturesEnabled(false);
+
+        }
+        if(prefs.getString("orientacao","").equals("")){
+            mUiSettings.setCompassEnabled(true);
+            mUiSettings.setRotateGesturesEnabled(true);
+        }
+    }
+
+    void moverCamera(Location location){
+        LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(
+                new CameraPosition(ll, 18, 0, location.getBearing())));
+    }
 
 }

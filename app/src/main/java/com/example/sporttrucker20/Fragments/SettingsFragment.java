@@ -115,7 +115,7 @@ public class SettingsFragment extends Fragment {
         }if (binding.pedalada.isChecked()){
             exercicio = "pedalada";
             Toast.makeText(getContext(), "Salvo com Sucesso", Toast.LENGTH_SHORT).show();
-        }else{
+        }if(exercicio == ""){
             Snackbar.make(v,"Selecione o tipo de Exercício", Snackbar.LENGTH_SHORT).show();
         }
     }
@@ -127,7 +127,7 @@ public class SettingsFragment extends Fragment {
         }if (binding.mS.isChecked()){
             velocidade = "ms";
             Toast.makeText(getContext(), "Salvo com Sucesso", Toast.LENGTH_SHORT).show();
-        }else{
+        }if(velocidade == ""){
             Snackbar.make(v,"Selecione o tipo de Medida de Velocidade", Snackbar.LENGTH_SHORT).show();
         }
     }
@@ -139,7 +139,7 @@ public class SettingsFragment extends Fragment {
         }if (binding.courseUp.isChecked()){
             orientacao = "course";
             Toast.makeText(getContext(), "Salvo com Sucesso", Toast.LENGTH_SHORT).show();
-        }else{
+        }if(orientacao == ""){
             Snackbar.make(v,"Selecione o tipo de Orientação", Snackbar.LENGTH_SHORT).show();
         }
     }
@@ -152,7 +152,7 @@ public class SettingsFragment extends Fragment {
         }if (binding.tVetorial.isChecked()){
             mapa = "vetorial";
             Toast.makeText(getContext(), "Salvo com Sucesso", Toast.LENGTH_SHORT).show();
-        }else{
+        }if(mapa == ""){
             Snackbar.make(v,"Selecione o tipo de Mapa", Snackbar.LENGTH_SHORT).show();
         }
     }
@@ -165,16 +165,22 @@ public class SettingsFragment extends Fragment {
             binding.exercicioGroup.check(R.id.pedalada);
         }if(prefs.getString("exercicio", "").equals("corrida")){
             binding.exercicioGroup.check(R.id.corrida);
+        }if(prefs.getString("exercicio", "").equals("")){
+            binding.exercicioGroup.check(R.id.corrida);
         }
     }
 
-    private void VerificaVelocidade(){
+    private void VerificaVelocidade() {
 
         SharedPreferences prefs = getActivity().getSharedPreferences("chaveGeral", MODE_PRIVATE);
-        if (prefs.getString("velocidade", "").equals("km")){
+        if (prefs.getString("velocidade", "").equals("km")) {
             binding.veloGroup.check(R.id.km_h);
-        }if (prefs.getString("velocidade", "").equals("ms")){
+        }
+        if (prefs.getString("velocidade", "").equals("ms")) {
             binding.veloGroup.check(R.id.m_s);
+        }
+        if (prefs.getString("velocidade", "").equals("")) {
+            binding.veloGroup.check(R.id.km_h);
         }
     }
 
@@ -185,6 +191,8 @@ public class SettingsFragment extends Fragment {
             binding.orientGroup.check(R.id.north_up);
         }if (prefs.getString("orientacao", "").equals("course")){
             binding.orientGroup.check(R.id.course_up);
+        }if (prefs.getString("orientacao", "").equals("")){
+                binding.orientGroup.check(R.id.course_up);
         }
     }
 
@@ -193,8 +201,10 @@ public class SettingsFragment extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences("chaveGeral", MODE_PRIVATE);
         if (prefs.getString("mapa", "").equals("vetorial")){
             binding.mapaGroup.check(R.id.t_vetorial);
-        }if (prefs.getString("orientacao", "").equals("satelite")){
+        }if (prefs.getString("mapa", "").equals("satelite")){
             binding.mapaGroup.check(R.id.t_satelite);
+        }if (prefs.getString("mapa", "").equals("")){
+                binding.mapaGroup.check(R.id.t_vetorial);
         }
     }
 }
