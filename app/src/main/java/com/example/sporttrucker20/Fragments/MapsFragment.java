@@ -67,14 +67,10 @@ public class MapsFragment extends Fragment {
     private GoogleMap mMap;
     private UiSettings mUiSettings;
 
-
     private ImageView mPlay, mPause, mClear;
     private AppCompatButton btnSalvar;
     private Chronometer cronometro;
     private TextView inputDistance, inputSpeed;
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,8 +89,6 @@ public class MapsFragment extends Fragment {
         iniciaColetaLocalizacao();
         initialTime = System.currentTimeMillis();
 
-
-
         //Sincronizar mapa
         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -102,6 +96,11 @@ public class MapsFragment extends Fragment {
                 mMap = googleMap;
                 verficaMapaTipo();
                 verficaMapaOrientacao();
+
+                //Introduzindo bússula no mapa
+                UiSettings mapUi = mMap.getUiSettings();
+                mapUi.setCompassEnabled(true);
+
                 //Mapa for clicado
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
@@ -138,7 +137,6 @@ public class MapsFragment extends Fragment {
         limparBtn();
         startBtn();
         pauseBtn();
-
 
         //Retornar view
         return binding.getRoot();
@@ -215,7 +213,6 @@ public class MapsFragment extends Fragment {
 
         setDistanciaTempoEVelocidade();
 
-
         if(prefs.getString("orientacao","").equals("course")){
             LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
             mMap.moveCamera(CameraUpdateFactory.newCameraPosition(
@@ -266,7 +263,6 @@ public class MapsFragment extends Fragment {
 
     // funcao p/ mostrar o monitoramento de tempo/velocidade/distancia
    private void startBtn(){
-
         mPlay.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
