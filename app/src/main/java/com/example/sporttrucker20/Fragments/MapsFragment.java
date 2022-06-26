@@ -349,4 +349,10 @@ public class MapsFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mFusedLocationProviderClient!=null)
+            mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
+    }
 }

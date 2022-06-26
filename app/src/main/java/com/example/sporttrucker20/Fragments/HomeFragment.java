@@ -1,5 +1,6 @@
 package com.example.sporttrucker20.Fragments;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -21,6 +22,7 @@ public class HomeFragment extends Fragment {
     private TextView nomeUser, emailUser;
     //private Button btDeslogar;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -28,6 +30,6 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         return binding.getRoot();
 
-
+        
     }
 }
