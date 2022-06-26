@@ -35,13 +35,33 @@
         android:id="@+id/containerComponents"
         style="@style/ContainerComponents"
         android:layout_width="wrap_content"
-        android:layout_height="400dp"
+        android:layout_height="500dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/editTextTextMultiLine"
+        android:id="@+id/editTextTextMultiLine1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="O  SPORT TRACKER é uma opção ideal para quem deseja monitorar a execução dos exercícios físicos, como por exemplo, corrida, caminhada e bicicleta. Integrado ao GPS do smartphone, ele permite traçar no mapa a rota pela qual o usuário fez a atividade, criando um histórico do monitoramento com as distâncias percorridas e o tempo de duração do exercício físico.
+Equipe"
+        android:textColor="@color/blue"
+        android:padding="10dp"
+        android:textSize="22sp"
+        android:layout_marginRight="6dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginBottom="150dp"
+        app:layout_constraintBottom_toBottomOf="@id/containerComponents"
+        app:layout_constraintStart_toEndOf="@id/containerComponents"
+        app:layout_constraintStart_toStartOf="@id/containerComponents"
+        app:layout_constraintTop_toTopOf="@+id/containerComponents"
+        tools:ignore="HardcodedText"/>
+
+
+    <TextView
+        android:id="@+id/editTextTextMultiLine2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -52,14 +72,14 @@ Lucas Brito Dos Santos \n
 Leonardo Sousa Fraga Santos \n
 Italo Pinheiro da Silva"
         android:textAllCaps="true"
-        android:textColor="@color/green"
-        android:textSize="22sp"
+        android:textColor="@color/gray_dark"
+        android:background="@color/blue"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="2dp"
         android:layout_marginLeft="2dp"
-        app:layout_constraintBottom_toBottomOf="@id/containerComponents"
-        app:layout_constraintStart_toEndOf="@id/containerComponents"
-        app:layout_constraintStart_toStartOf="@id/containerComponents"
-        app:layout_constraintTop_toTopOf="@+id/containerComponents"
+        app:layout_constraintTop_toBottomOf="@id/editTextTextMultiLine1"
         tools:ignore="HardcodedText"/>
 
 

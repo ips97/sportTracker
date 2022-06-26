@@ -33,8 +33,9 @@
     <string name="btnCadastrar">Registrar</string>
     <string name="textRecuperarSenha">Olvidaste tu contraseña?</string>
     <string name="title_cadastro">Registro</string>
-    <string name="title_sobre">Miembros del equipo:</string>
+    <string name="title_sobre">Miembros e App:</string>
     <string name="title_recuperar">Recuperar Cuenta</string>
     <string name="inputSpeed">Velocidad</string>
     <string name="inputDistance">Distancia</string>
+    <string name="chronometer">Tiempo</string>
 </resources>

@@ -141,6 +141,7 @@ public class MapsFragment extends Fragment {
 
         //Retornar view
         return binding.getRoot();
+        //return root;
     }
 
     // funcao p/ iniciar a coleta de localização
