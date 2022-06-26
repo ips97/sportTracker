@@ -9,24 +9,19 @@
     android:visibility="visible"
     tools:context=".Fragments.MapsFragment">
 
-    <!--ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_map" /-->
-
     <fragment
         android:id="@+id/google_map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="409dp"
-        android:layout_height="404dp"
-        android:layout_marginLeft="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
         android:layout_marginTop="4dp"
-        android:layout_marginRight="2dp" />
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="10dp"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="285dp"
+        android:layout_height="275dp"
         android:layout_below="@+id/google_map">
 
         <View
