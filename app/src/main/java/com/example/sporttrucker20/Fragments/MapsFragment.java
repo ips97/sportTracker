@@ -237,17 +237,20 @@ public class MapsFragment extends Fragment {
     private void setDistanciaTempoEVelocidade(){
 
         if(prefs.getString("velocidade","").equals("ms") && distanciaAcumulada > 0 && started == true){
+
+            distanciaAcumuladaKm = distanciaAcumulada / 1000;
             cron = true;
             df =  new DecimalFormat("0.00");
             df.setRoundingMode(RoundingMode.HALF_UP);
-            binding.inputDistance.setText(df.format(distanciaAcumulada) + " km");
             double time = distanciaAcumulada / ((SystemClock.elapsedRealtime() - cronometro.getBase()) /1000);
             binding.inputSpeed.setText(df.format(time) + " m/s");
-
-        }if(prefs.getString("velocidade","").equals("km") && distanciaAcumulada> 0 && started == true){
+            binding.inputDistance.setText(df.format(distanciaAcumuladaKm) + " km");
+        }
+        if(prefs.getString("velocidade","").equals("km") && distanciaAcumulada> 0 && started == true){
 
             distanciaAcumuladaKm = distanciaAcumulada / 1000;
-            df =  new DecimalFormat("0.000");
+            cron = true;
+            df =  new DecimalFormat("0.00");
             DecimalFormat sp =  new DecimalFormat("0.0");
             df.setRoundingMode(RoundingMode.HALF_UP);
             double time = distanciaAcumulada / ((SystemClock.elapsedRealtime() - cronometro.getBase()) /1000);
