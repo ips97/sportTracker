@@ -94,6 +94,7 @@ public class MapsFragment extends Fragment {
         initialTime = System.currentTimeMillis();
 
 
+
         //Sincronizar mapa
         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -101,7 +102,7 @@ public class MapsFragment extends Fragment {
                 mMap = googleMap;
                 verficaMapaTipo();
                 verficaMapaOrientacao();
-                //Mapa for carregado
+                //Mapa for clicado
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
                     public void onMapClick(@NonNull LatLng latLng) {
@@ -198,7 +199,7 @@ public class MapsFragment extends Fragment {
 
     // funcao para atualizar a localização no mapa
     public void atualizaPosicaoNoMapa(Location location) {
-
+        verficaMapaOrientacao();
         currentTime = System.currentTimeMillis();
         elapsedTime = currentTime - initialTime;
 
@@ -213,14 +214,15 @@ public class MapsFragment extends Fragment {
         }
 
         setDistanciaTempoEVelocidade();
-        LatLng userPosition = new LatLng(location.getLatitude(), location.getLongitude());
-        verficaMapaOrientacao();
-
 
 
         if(prefs.getString("orientacao","").equals("course")){
-            moverCamera(location);
+            LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
+            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(
+                    new CameraPosition(ll, 18, 0, location.getBearing())));
         }
+
+        LatLng userPosition = new LatLng(location.getLatitude(), location.getLongitude());
 
         if(mMap != null){
             if (userMarker == null) {
@@ -231,11 +233,12 @@ public class MapsFragment extends Fragment {
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(userPosition));
             }
         }
+
     }
 
     // funcao para mostrar o tempo e a distancia de movimentação
     // quando se dá o play
-    private void setDistanciaTempoEVelocidade(){
+  private void setDistanciaTempoEVelocidade(){
 
         if(prefs.getString("velocidade","").equals("ms") && distanciaAcumulada > 0 && started == true){
 
@@ -262,7 +265,7 @@ public class MapsFragment extends Fragment {
     }
 
     // funcao p/ mostrar o monitoramento de tempo/velocidade/distancia
-    private void startBtn(){
+   private void startBtn(){
 
         mPlay.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -343,18 +346,11 @@ public class MapsFragment extends Fragment {
         if(prefs.getString("orientacao","").equals("course")){
             mUiSettings.setCompassEnabled(false);
             mUiSettings.setRotateGesturesEnabled(false);
-
         }
         if(prefs.getString("orientacao","").equals("")){
             mUiSettings.setCompassEnabled(true);
             mUiSettings.setRotateGesturesEnabled(true);
         }
-    }
-
-    void moverCamera(Location location){
-        LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(
-                new CameraPosition(ll, 18, 0, location.getBearing())));
     }
 
 }
