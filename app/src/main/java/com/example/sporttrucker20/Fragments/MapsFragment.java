@@ -80,7 +80,7 @@ public class MapsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentMapsBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        //View root = binding.getRoot();
 
         //Iniciar view
         //View view = inflater.inflate(R.layout.fragment_maps, container, false);
@@ -140,7 +140,7 @@ public class MapsFragment extends Fragment {
 
 
         //Retornar view
-        return root;
+        return binding.getRoot();
     }
 
     // funcao p/ iniciar a coleta de localização
