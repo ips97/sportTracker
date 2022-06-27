@@ -12,12 +12,12 @@
     <fragment
         android:id="@+id/google_map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="405dp"
+        android:layout_height="390dp"
         android:layout_marginLeft="6dp"
+        android:layout_marginTop="4dp"
         android:layout_marginRight="6dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -37,8 +37,8 @@
             style="@style/Edit_Text"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="26dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="12dp"
             android:hint="@string/inputSpeed"
             android:inputType="number"
             android:padding="10dp"
@@ -60,8 +60,8 @@
             style="@style/Edit_Text"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="26dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
             android:inputType="time"
             android:padding="10dp"
             android:text="00:00"
@@ -71,12 +71,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:textColor="@color/blue"
-            android:text="@string/chronometer"
             android:layout_marginStart="50dp"
+            android:padding="2dp"
+            android:text="@string/chronometer"
+            android:textColor="@color/blue"
             app:layout_constraintStart_toEndOf="@id/inputSpeed"
             app:layout_constraintTop_toBottomOf="@id/chronometer" />
 
@@ -86,8 +87,8 @@
             style="@style/Edit_Text"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="26dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="16dp"
             android:hint="@string/inputDistance"
             android:inputType="number"
             android:padding="10dp"
