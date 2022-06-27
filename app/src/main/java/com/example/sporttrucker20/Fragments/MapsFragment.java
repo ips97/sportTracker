@@ -21,6 +21,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.sporttrucker20.Coordenada;
 import com.example.sporttrucker20.R;
 import com.example.sporttrucker20.databinding.FragmentMapsBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -37,6 +38,14 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -45,6 +54,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MapsFragment extends Fragment {
 
@@ -71,6 +84,11 @@ public class MapsFragment extends Fragment {
     private AppCompatButton btnSalvar;
     private Chronometer cronometro;
     private TextView inputDistance, inputSpeed;
+
+    List<Coordenada> coords = new ArrayList<>();
+    int count = 0;
+
+    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -137,6 +155,7 @@ public class MapsFragment extends Fragment {
         limparBtn();
         startBtn();
         pauseBtn();
+        saveHistoric();
 
         //Retornar view
         return binding.getRoot();
@@ -212,6 +231,15 @@ public class MapsFragment extends Fragment {
         }
 
         setDistanciaTempoEVelocidade();
+        if (count == 2){
+            Coordenada dto = new Coordenada();
+            dto.setLng(location.getLongitude());
+            dto.setLat(location.getLatitude());
+            coords.add(dto);
+            count=0;
+        }else{
+            count++;
+        }
 
         if(prefs.getString("orientacao","").equals("course")){
             LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
@@ -312,6 +340,83 @@ public class MapsFragment extends Fragment {
                 started = false;
             }
         });
+    }
+
+    private void saveHistoric(){
+        binding.btnSalvar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Map<String, Object> exercicio = new HashMap<>();
+                exercicio.put("distancia", distanciaAcumuladaKm);
+                exercicio.put("tempo", elapsedTime);
+                exercicio.put("velocidade", binding.inputSpeed.getText().toString());
+                //exercicio.put("tipoExercicio", exerciseType);
+                exercicio.put("orientacaoMapa", prefs.getString("mapa", ""));
+                exercicio.put("coordenadas", coords);
+
+                firestore.collection("historico_Tracker")
+                        .add(exercicio)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                               Toast.makeText(getContext(), "Salvo", Toast.LENGTH_SHORT).show();
+                               String salvoDTO = documentReference.getId();
+                               //deleteTodosAntesDeSalvar(salvoDTO);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getContext(), "Houve um erro", Toast.LENGTH_SHORT).show();
+                                System.out.println("Erro ao salvar: "+ e.getMessage());
+                            }
+                        });
+
+                binding.inputDistance.setText("");
+                distanciaAcumulada = 0;
+                distanciaAcumuladaKm = 0;
+                cronometro.getText();
+                binding.inputSpeed.setText("");
+                cronometro.setBase(SystemClock.elapsedRealtime());
+                pauseOffset = 0;
+                started = false;
+                binding.btnClear.setEnabled(false);
+
+            }
+        });
+    }
+
+    private void deleteTodosAntesDeSalvar(String salvoDTO){
+        firestore.collection("historicTracker").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                if (!document.getId().equalsIgnoreCase(salvoDTO)){
+                                    firestore.collection("historicTracker")
+                                            .document(document.getId())
+                                            .delete()
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    System.out.println("Excluído");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    System.out.println("Erro ao Excluir");
+                                                }
+                                            });
+                                }
+                            }
+                        }else{
+                            Toast.makeText(getContext(), "Erro ao salvar!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
     }
 
     // método para verificar tipo de mapa
