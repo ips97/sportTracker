@@ -14,6 +14,7 @@
     <string name="menu_map">Mapa</string>
     <string name="menu_about">Sobre</string>
     <string name="menu_settings">Configuração</string>
+    <string name="menu_historic">Histórico</string>
     <string name="exerCaminhada">Caminhada</string>
     <string name="exerCorrida">Corrida</string>
     <string name="exerPedalada">Pedalada</string>
@@ -46,4 +47,10 @@
     <string name="chronometer">Tempo</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Aqui!</string>
+
+    // Historico
+    <string name="title_historic">Última Atividade</string>
+    <string name="inputSpeed_historic">Velocidade</string>
+    <string name="inputDistance_historic">Distância</string>
+    <string name="chronometer_historic">Tempo</string>
 </resources>

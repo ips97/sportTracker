@@ -4,10 +4,20 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Documentos/Faculdade/5.semestre/Dispositivos Mobile/Sport Trucker 2.0/sportTracker -/app/src/main/res/layout/fragment_maps.xml" value="0.22447916666666667" />
+        <entry key="..\:/Documentos/Faculdade/5.semestre/Dispositivos Mobile/sportTracker/sportTracker/app/src/main/res/drawable/button.xml" value="0.214" />
+        <entry key="..\:/Documentos/Faculdade/5.semestre/Dispositivos Mobile/sportTracker/sportTracker/app/src/main/res/drawable/ic_home.xml" value="0.214" />
+        <entry key="..\:/Documentos/Faculdade/5.semestre/Dispositivos Mobile/sportTracker/sportTracker/app/src/main/res/drawable/ic_info.xml" value="0.214" />
+        <entry key="..\:/Documentos/Faculdade/5.semestre/Dispositivos Mobile/sportTracker/sportTracker/app/src/main/res/drawable/ic_map.xml" value="0.214" />
+        <entry key="..\:/Documentos/Faculdade/5.semestre/Dispositivos Mobile/sportTracker/sportTracker/app/src/main/res/drawable/splash_bg.xml" value="0.214" />
+        <entry key="..\:/Documentos/Faculdade/5.semestre/Dispositivos Mobile/sportTracker/sportTracker/app/src/main/res/layout/fragment_h_istoric.xml" value="0.33" />
+        <entry key="..\:/Documentos/Faculdade/5.semestre/Dispositivos Mobile/sportTracker/sportTracker/app/src/main/res/layout/fragment_historic.xml" value="0.33" />
+        <entry key="..\:/Documentos/Faculdade/5.semestre/Dispositivos Mobile/sportTracker/sportTracker/app/src/main/res/layout/fragment_home.xml" value="0.22447916666666667" />
+        <entry key="..\:/Documentos/Faculdade/5.semestre/Dispositivos Mobile/sportTracker/sportTracker/app/src/main/res/layout/fragment_maps.xml" value="0.22447916666666667" />
+        <entry key="..\:/Documentos/Faculdade/5.semestre/Dispositivos Mobile/sportTracker/sportTracker/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.22447916666666667" />
+        <entry key="..\:/Documentos/Faculdade/5.semestre/Dispositivos Mobile/sportTracker/sportTracker/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.214" />
         <entry key="..\:/leona/GitHub/sportTracker/app/src/main/res/layout/fragment_about.xml" value="0.22" />
         <entry key="..\:/leona/GitHub/sportTracker/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/leona/GitHub/sportTracker/app/src/main/res/layout/fragment_maps.xml" value="0.22" />
-        <entry key="..\:/leona/GitHub/sportTracker/app/src/main/res/layout/fragment_profile.xml" value="0.20416666666666666" />
         <entry key="..\:/leona/GitHub/sportTracker/app/src/main/res/layout/fragment_settings.xml" value="0.22" />
       </map>
     </option>

@@ -47,11 +47,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -94,10 +89,6 @@ public class MapsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentMapsBinding.inflate(inflater, container, false);
-        //View root = binding.getRoot();
-
-        //Iniciar view
-        //View view = inflater.inflate(R.layout.fragment_maps, container, false);
 
         //Iniciar fragmento de mapa
         SupportMapFragment supportMapFragment = (SupportMapFragment)
@@ -348,11 +339,11 @@ public class MapsFragment extends Fragment {
             public void onClick(View v) {
 
                 Map<String, Object> exercicio = new HashMap<>();
-                exercicio.put("distancia", distanciaAcumuladaKm);
-                exercicio.put("tempo", elapsedTime);
+                exercicio.put("distancia", binding.inputDistance.getText().toString());
+                exercicio.put("tempo", cronometro.getText().toString());
                 exercicio.put("velocidade", binding.inputSpeed.getText().toString());
-                //exercicio.put("tipoExercicio", exerciseType);
-                exercicio.put("orientacaoMapa", prefs.getString("mapa", ""));
+                exercicio.put("tipoExercicio", prefs.getString("exercicio",""));
+                exercicio.put("orientacaoMapa", prefs.getString("orientacao", ""));
                 exercicio.put("coordenadas", coords);
 
                 firestore.collection("historico_Tracker")
@@ -362,7 +353,7 @@ public class MapsFragment extends Fragment {
                             public void onSuccess(DocumentReference documentReference) {
                                Toast.makeText(getContext(), "Salvo", Toast.LENGTH_SHORT).show();
                                String salvoDTO = documentReference.getId();
-                               //deleteTodosAntesDeSalvar(salvoDTO);
+                               deleteTodosAntesDeSalvar(salvoDTO);
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
