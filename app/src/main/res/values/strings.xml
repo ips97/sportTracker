@@ -1,12 +1,4 @@
 <resources>
-    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
-    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
-    <string name="nav_header_title" translatable="false">Android Studio</string>
-    <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
-    <string name="perfilUsuario">Perfil do Usuário</string>
-    <string name="peso">Digite Seu Peso</string>
-    <string name="altura">Digite Sua Altura</string>
-    <string name="nome">Digite Seu Nome</string>
 
 
     <string name="app_name">Sport Trucker</string>
@@ -29,11 +21,6 @@
     <string name="vetorial">Vetorial</string>
     <string name="satelite">Satélite</string>
     <string name="salvar">Salvar</string>
-    <string name="action_settings">Configurações</string>
-    <string name="nav_header_desc">Cabeçalho de navegação</string>
-    <string name="voltar">Voltar</string>
-    <string name="Conf.name">Configuração</string>
-    <string name="btnPerfilSalvar">Salvar Perfil</string>
 
     <string name="btnEntrar">Entrar</string>
     <string name="btnCadastrar">Cadastrar</string>
@@ -46,11 +33,9 @@
     <string name="inputDistance">Distância</string>
     <string name="chronometer">Tempo</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment" translatable="false">Aqui!</string>
 
     // Historico
     <string name="title_historic">Última Atividade</string>
     <string name="inputSpeed_historic">Velocidade</string>
     <string name="inputDistance_historic">Distância</string>
-    <string name="chronometer_historic">Tempo</string>
 </resources>

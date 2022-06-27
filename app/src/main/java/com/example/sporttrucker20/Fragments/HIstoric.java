@@ -90,8 +90,8 @@ import java.util.Map;
 
         private void setFieldsInformationsSaved(Map<String, Object> dadosMap) {
 
-            exerciseType = (String) dadosMap.get("tipoExercicio");
-            speedUnit = (String) dadosMap.get("unidadeVelocidade");
+           // exerciseType = (String) dadosMap.get("tipoExercicio");
+            //speedUnit = (String) dadosMap.get("unidadeVelocidade");
             mapOrientation = (String) dadosMap.get("orientacaoMapa");
             mapType = (String) dadosMap.get("tipoMapa");
             speed = (String) dadosMap.get("velocidade");
@@ -103,12 +103,16 @@ import java.util.Map;
             List<LatLng> listLat = new ArrayList<>();
 
             for(int i = 0; i < tra.size(); i++){
-                LatLng ll = new LatLng(tra.get(i).get("lat"), tra.get(i).get("lon"));
-                listLat.add(ll);
+               if(tra.get(i).get("lat") != null && tra.get(i).get("lng") != null) {
+                   LatLng ll = new LatLng(tra.get(i).get("lat"), tra.get(i).get("lng"));
+
+                   listLat.add(ll);
+               }
             }
 
             System.out.println("LATLONG >>>>>>> " + tra.toString());
 
+            speedUnit = "km/h";
             String distanceType = speedUnit.equalsIgnoreCase("km/h") ? " km" : " m";
 
             binding.inputDistanceHistoric.setText(distance  + distanceType);
@@ -121,13 +125,13 @@ import java.util.Map;
 
             double latmin = tra.get(0).get("lat");
             double latmax = tra.get(0).get("lat");
-            double lgnmin = tra.get(0).get("lon");
-            double lgnmax = tra.get(0).get("lon");
+            double lgnmin = tra.get(0).get("lng");
+            double lgnmax = tra.get(0).get("lng");
 
             for(int i = 1; i < tra.size(); i++ ){
                 double lat, lon;
                 lat = tra.get(i).get("lat");
-                lon = tra.get(i).get("lon");
+                lon = tra.get(i).get("lgn");
 
                 latmin = latmin < lat ? latmin : lat;
                 latmax = latmax > lat ? latmax : lat;
@@ -141,7 +145,7 @@ import java.util.Map;
             LatLngBounds bound = new LatLngBounds(southWest, northEast);
 
             //gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bound, 50));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(tra.get(0).get("lat"), tra.get(tra.size() - 1).get("lon")), 12));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(tra.get(0).get("lat"), tra.get(tra.size() - 1).get("lng")), 12));
 
 
         }
