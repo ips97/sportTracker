@@ -38,4 +38,5 @@
     <string name="inputSpeed">Speed</string>
     <string name="inputDistance">Distance</string>
     <string name="chronometer">Time</string>
+    <string name="menu_historic">Historic</string>
 </resources>

@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_menu_home_to_menu_about"
             app:destination="@id/menu_about" />
+        <action
+            android:id="@+id/action_menu_home_to_historic"
+            app:destination="@id/historic" />
     </fragment>
 
     <fragment
@@ -35,6 +38,9 @@
         <action
             android:id="@+id/action_menu_map_to_menu_about"
             app:destination="@id/menu_about" />
+        <action
+            android:id="@+id/action_menu_map_to_historic"
+            app:destination="@id/historic" />
     </fragment>
 
     <fragment
@@ -51,6 +57,9 @@
         <action
             android:id="@+id/action_menu_about_to_menu_map"
             app:destination="@id/menu_map" />
+        <action
+            android:id="@+id/action_menu_about_to_historic"
+            app:destination="@id/historic" />
     </fragment>
 
     <fragment
@@ -67,6 +76,27 @@
         <action
             android:id="@+id/action_menu_settings_to_menu_map"
             app:destination="@id/menu_map" />
+        <action
+            android:id="@+id/action_menu_settings_to_historic"
+            app:destination="@id/historic" />
+    </fragment>
+    <fragment
+        android:id="@+id/historic"
+        android:name="com.example.sporttrucker20.Fragments.historic"
+        android:label="fragment_historic"
+        tools:layout="@layout/fragment_historic">
+        <action
+            android:id="@+id/action_historic_to_menu_about"
+            app:destination="@id/menu_about" />
+        <action
+            android:id="@+id/action_historic_to_menu_home"
+            app:destination="@id/menu_home" />
+        <action
+            android:id="@+id/action_historic_to_menu_map"
+            app:destination="@id/menu_map" />
+        <action
+            android:id="@+id/action_historic_to_menu_settings"
+            app:destination="@id/menu_settings" />
     </fragment>
 
 </navigation>
